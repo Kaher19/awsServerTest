@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Alumno
 {
+    use HasFactory;
+
     private int $id = 0;
     private int $matricula;
     private string $nombre;
     private string $apellido;
 
     public function __construct($matricula,$nombre,$apellido){
-        $this->id = $this->id++;
+        $this->setId($this->id+1);
         $this->matricula = $matricula;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
@@ -48,12 +52,13 @@ class Alumno
         $this->apellido = $apellido;
     }
 
-    public function toJson(){
-        return `{
-            "id":"$this->id",
-            "matricula":"$this->matricula",
-            "nombre":"$this->nombre",
-            "apellido":"$this->apellido"
-        }`;
+    public function toArray(){
+        return 
+        [
+            "id"=>"$this->id",
+            "matricula"=>"$this->matricula",
+            "nombre"=>"$this->nombre",
+            "apellido"=>"$this->apellido"
+        ];
     }
 }

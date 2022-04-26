@@ -8,7 +8,10 @@ use App\Models\Alumno;
 class AlumnoController extends Controller
 {
 
-    private $alumnos = array();
+    private $alumnos;
+
+    public function __construct(){
+    }
 
     /**
      * Display a listing of the resource.
@@ -17,10 +20,9 @@ class AlumnoController extends Controller
      */
     public function index()
     {
+        $this->alumnos = Alumno::factory()->count(3)->make();
         return response()->json(
-            [
-                'data' => $this->alumnos
-            ], 200
+            $this->alumnos->jsonSerialize(), 200
         );
     }
 
@@ -33,11 +35,12 @@ class AlumnoController extends Controller
     public function store(AlumnoRequest $request)
     {
         $alumno = new Alumno($request->matricula,$request->nombre,$request->apellido);
-        array_push($this->alumnos,($alumno->toJson()));
+        $this->alumnos[] = $alumno->toArray();
+        $this->alumnos[] = $alumno->toArray();
+        $this->alumnos[] = $alumno->toArray();
+        $this->alumnos[] = $alumno->toArray();
         return response()->json(
-            [
-                'data' => json_encode($this->alumnos)
-            ], 201
+            ['data' => $this->alumnos], 201
         );
     }
 
