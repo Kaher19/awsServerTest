@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AlumnoRequest;
 use App\Models\Alumno;
-use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
 {
 
-    private Alumno $alumnos;
+    private $alumnos = array();
 
     /**
      * Display a listing of the resource.
@@ -27,14 +27,16 @@ class AlumnoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\AlumnoRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AlumnoRequest $request)
     {
+        $alumno = new Alumno($request->matricula,$request->nombre,$request->apellido);
+        array_push($this->alumnos,($alumno->toJson()));
         return response()->json(
             [
-                'data' => $this->alumnos
+                'data' => json_encode($this->alumnos)
             ], 201
         );
     }
@@ -53,11 +55,11 @@ class AlumnoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\AlumnoRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AlumnoRequest $request, $id)
     {
         //
     }
